@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import "./App.css";
+import axios from "axios";
+import Swal from "sweetalert2";
 
 function App() {
   const [formValues, setFormValues] = useState({
@@ -51,6 +53,34 @@ function App() {
 
     // Form is valid, log the form data to the console
     console.log(formValues);
+
+    //we are ready to send the data to the server and pass via parameter like first eventid/abacusid/amount
+    //then we will get the response from the server and show the alert message
+    try{
+      //pass via parameter like first eventid/abacusid/amount
+      axios.get('https://abacus.org.in/api/org/' + eventid + '/' + abacusid + '/' + amount)
+      .then(function (response) {
+        console.log(response);
+        Swal.fire({
+          icon: 'success',
+          title: 'Success',
+          text: 'Payment has been successfully added',
+        })
+      }
+      )
+      .catch(function (error) {
+        console.log(error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Something went wrong!',
+        })
+      }
+      );
+    }
+    catch(error){
+      console.log(error);
+    }
   };
 
   return (
