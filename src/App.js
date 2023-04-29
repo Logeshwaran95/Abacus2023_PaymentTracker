@@ -7,12 +7,10 @@ function App() {
   const [formValues, setFormValues] = useState({
     eventid: "",
     abacusid: "",
-    amount: "",
   });
   const [formErrors, setFormErrors] = useState({
     eventid: "",
     abacusid: "",
-    amount: "",
   });
 
   const validEventIds = ["12", "13", "19", "20", "21"];
@@ -25,7 +23,7 @@ function App() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const { eventid, abacusid, amount } = formValues;
+    const { eventid, abacusid } = formValues;
 
     // Validate the form fields
     let errors = {};
@@ -39,13 +37,6 @@ function App() {
     } else if (!/^\d{8}$/.test(abacusid)) {
       errors.abacusid = "Abacus ID must be 8 digits";
     }
-    //amount shouldnt contain any special characters or alphabets
-    if (!amount) {
-      errors.amount = "Amount is required";
-    }
-    if(!/^\d+$/.test(amount)){
-      errors.amount = "Amount should be a number";
-    }
     if (Object.keys(errors).length > 0) {
       setFormErrors(errors);
       return;
@@ -58,7 +49,7 @@ function App() {
     //then we will get the response from the server and show the alert message
     try{
       //pass via parameter like first eventid/abacusid/amount
-      axios.get('https://abacus.org.in/api/org/' + eventid + '/' + abacusid + '/' + amount)
+      axios.get('https://abacus.org.in/api/org/' + eventid + '/' + abacusid)
       .then(function (response) {
         console.log(response);
         Swal.fire({
@@ -116,19 +107,6 @@ function App() {
           />
           {formErrors.abacusid && (
             <div className="error">{formErrors.abacusid}</div>
-          )}
-        </div>
-        <div className="form-group">
-          <label htmlFor="amount">Amount:</label>
-          <input
-            type="text"
-            id="amount"
-            name="amount"
-            value={formValues.amount}
-            onChange={handleInputChange}
-          />
-          {formErrors.amount && (
-            <div className="error">{formErrors.amount}</div>
           )}
         </div>
         <button type="submit">Submit</button>
