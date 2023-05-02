@@ -99,7 +99,7 @@ function App() {
   link.href = url;
   link.setAttribute('download', `${
     eventsList[selectedEvent]
-  } Detils.csv`);
+  } Details.csv`);
   document.body.appendChild(link);
   link.click();
   Swal.fire({
