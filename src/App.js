@@ -91,16 +91,30 @@ function App() {
     }
 
     try {
-      const response = await axios.get(`https://example.com/api/download/${selectedEvent}`);
-      const link = document.createElement('a');
-      link.href = response.data.url;
-      link.setAttribute('download', `${selectedEvent}.pdf`);
-      document.body.appendChild(link);
-      link.click();
-      link.parentNode.removeChild(link);
+      
+      const response = await axios.get(`https://abacus.org.in/api/org/${selectedEvent}`, { responseType: 'blob' });
+  const blob = new Blob([response.data], { type: 'text/csv' });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.setAttribute('download', `${
+    eventsList[selectedEvent]
+  } Detils.csv`);
+  document.body.appendChild(link);
+  link.click();
+  Swal.fire({
+    icon: "success",
+    title: "Success",
+    text: `${eventsList[selectedEvent]} File has been successfully downloaded`,
+  });
     } catch (error) {
       console.error(error);
       setErrorMessage('Failed to download file');
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Something went wrong!",
+      });
     }
   };
 
