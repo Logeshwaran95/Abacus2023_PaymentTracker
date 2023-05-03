@@ -3,6 +3,7 @@ import "./Home.css";
 import axios from "axios";
 import Swal from "sweetalert2";
 import {eventsList} from "./eventsList";
+import CsvShow from "./CsvShow";
 
 function App() {
   const [formValues, setFormValues] = useState({
@@ -104,6 +105,7 @@ function App() {
   } Details.csv`);
   document.body.appendChild(link);
   link.click();
+  
   Swal.fire({
     icon: "success",
     title: "Success",
@@ -128,10 +130,28 @@ function App() {
     ));
   };
 
+  const [showViewer, setShowViewer] = useState(false);
+  const [csvData, setCsvData] = useState(null);
+
+  const handleFileLoaded = (data) => {
+    setCsvData(data);
+    setShowViewer(true);
+  };
+
+  const handleViewerClose = () => {
+    setShowViewer(false);
+    setCsvData(null);
+  };
+
   return (
     <div className="App">
+
+   
       
       <form onSubmit={handleSubmit}>
+
+
+
         <center>
           <h1>Abacus Payment Tracker</h1>
         </center>
@@ -188,8 +208,17 @@ function App() {
         <button type="button" onClick={handleDownload}>
           Download
         </button>
+        <br></br>
+        <br></br>
+
+        {
+
+          selectedEvent && <CsvShow url={`https://abacus.org.in/api/org/csv/${selectedEvent}`} />
+        }
+        
         {errorMessage && <div className="error">{errorMessage}</div>}
       </div>
+      
       </form>
 
       
