@@ -14,14 +14,29 @@ const LoginForm = () => {
     e.preventDefault();
     
     // alert(`${process.env.CSEA_EMAIL}`)
-    
-    if(`${process.env.REACT_APP_API_URL}` === username && `${process.env.REACT_APP_API_KEY}` === password){
-      navigate('/admin');
-    }else{
+    const data = {
+      email : username,
+      password : password
+    }
+
+    try{
+      const response = await axios.post(`https://www.abacus.org.in/api/org/loginAdmin`,data);
+      console.log(response);
+
       Swal.fire({
-        icon: 'error',
-        title: 'Oops...',
-        text: 'Invalid username or password!!',
+        icon: "success",
+        title: "Success",
+        text: "Login Successful",
+      });
+
+      navigate('/314159265358979');           
+    }
+    catch(error){
+      console.log(error);
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: error.response.data.message
       });
     }
 
