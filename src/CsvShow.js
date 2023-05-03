@@ -30,7 +30,9 @@ export default function CsvViewerButton({url}) {
             handleFileLoaded(parsedData.data);
           })
         }>
-          View File
+          {
+            url=="https://abacus.org.in/api/org/csv" ? "View All Events Summary" : "View Event Info"
+          }
         </Button>
 
         <Modal
